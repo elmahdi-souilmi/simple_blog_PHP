@@ -13,7 +13,7 @@ if (isset($_SESSION['id'])) {
     // free result from memory
     mysqli_free_result($result);
     // select the name
-    $sql1 = " select last_name from user where id = $id";
+    $sql1 = " select last_name, first_name from user where id = $id";
     $result1 = mysqli_query($connect, $sql1);
     $name = mysqli_fetch_assoc($result1);
     // add post
@@ -73,7 +73,7 @@ if (isset($_SESSION['id'])) {
             <!-- Excerpt -->
             <p><?php echo htmlspecialchars($post['text']); ?>.</p>
             <!-- Post data -->
-            <p>by <a><strong><?php echo $name['last_name'] ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('y-m-d') ; ?></p>
+            <p>by <a><strong><?php echo $name['last_name'] . '  ' . $name['first_name'] ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('y-m-d') ; ?></p>
             <!-- Read more button -->
             <button type="button" class="btn btn-outline-primary btn-rounded waves-effect" data-toggle="modal" data-target="#modalLoginForm">Update</button>
             <button type="button" class="btn btn-outline-danger btn-rounded waves-effect">Delete</button>

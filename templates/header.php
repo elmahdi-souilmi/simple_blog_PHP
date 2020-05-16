@@ -15,14 +15,14 @@
 </head>
     <body class="grey lighten-4">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="../index.php">POSTER</a>
+  <a class="navbar-brand" href="../index.php">POSTERS</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="../index.php">Home <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="../register.php"> Sing UP!</a>
+      <a class="nav-item nav-link" href="../index.php">Home</a>
+      <a class="nav-item nav-link" href="../register.php"> Sing UP!</a>  
       </div>
   </div>
       <?php 
@@ -34,16 +34,14 @@
             include 'config/db_connect.php';
             include 'class.post.php';
               $id = $_SESSION['id'];
-            $sql1 = " select last_name from user where id = $id";
+            $sql1 = " select last_name, first_name from user where id = $id";
             $result1 = mysqli_query($connect, $sql1);
             $name = mysqli_fetch_assoc($result1);
          ?><div class="pull-right">
                 <ul class="nav pull-right">
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <?php echo  $name['last_name']?> </a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <?php echo  $name['last_name'] . '  ' . $name['first_name']  ?> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-cog"></i> Preferences</a></li>
-                            <li><a href="#"><i class="icon-envelope"></i> Contact Support</a></li>
-                            <li class="divider"></li>
+                            <li><a href="../postByUser.php"><i class="icon-envelope"></i> Post By Use</a></li>
                             <li><a href="/log_out.php">  </i>  Logout</a></li>
                         </ul>
                     </li>

@@ -1,7 +1,7 @@
 <?php 
        include 'config/db_connect.php';
       // wirte query 
-      $sql = "SELECT title, text, create_at, user.last_name FROM post JOIN user where post.belong_to = user.id ORDER BY `post`.`create_at` DESC";
+      $sql = "SELECT title, text, create_at, user.last_name, user.first_name FROM post JOIN user where post.belong_to = user.id ORDER BY `post`.`create_at` DESC";
       // get result
       $result = mysqli_query($connect, $sql);
       // fetch the resulting rows as an array
@@ -38,7 +38,7 @@
             <!-- Excerpt -->
             <p><?php echo htmlspecialchars($post['text']); ?>.</p>
             <!-- Post data -->
-            <p>by <a><strong><?php echo htmlspecialchars($post['last_name']); ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('d-m-y') ; ?></p>
+            <p>by <a><strong><?php echo htmlspecialchars($post['last_name']) . ' ' . htmlspecialchars($post['first_name']) ; ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('d-m-y') ; ?></p>
             <!-- Read more button -->
             <!-- <a class="btn btn-success btn-md">Read more</a> -->
             </div>

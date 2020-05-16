@@ -20,14 +20,9 @@
     } else {
        $error = 'verefie l3ibaat ';
     }
-
  }
-  
+ 
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <?php include 'templates/header.php';?>
