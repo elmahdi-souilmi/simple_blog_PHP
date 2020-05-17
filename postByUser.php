@@ -1,11 +1,14 @@
 <?php  
 session_start();
 if (isset($_SESSION['id'])) {   
+  $title = '';
+  // errors
+  $errors = ['text' => '', 'title' => ''];
     //  echo 'welcome id :' . $_SESSION['id'];
      include 'config/db_connect.php';
       $id = $_SESSION['id'];
     // wirte query 
-    $sql = " SELECT title, text, create_at FROM post WHERE belong_to = $id";
+    $sql = " SELECT id, title, text, create_at FROM post WHERE belong_to = $id ORDER BY `post`.`create_at` DESC";
     // get result
     $result = mysqli_query($connect, $sql);
     // fetch the resulting rows as an array
@@ -18,14 +21,43 @@ if (isset($_SESSION['id'])) {
     $name = mysqli_fetch_assoc($result1);
     // add post
     if (isset($_POST['add'])) {
-      include_once('class.post.php');
-      $text = mysqli_real_escape_string($connect, $_POST['text']);
-      $title = mysqli_real_escape_string($connect, $_POST['title']);
-      $belong_to = $_SESSION['id'];
-      $post1 = new post( $title, $text, $belong_to);
-      $post1 -> add();
+              // check titile
+              if (empty($_POST['title'])) {
+                      $errors['title'] = 'title is required <br/>';
+                  } else 
+                    {
+                      $title = $_POST['title'];
+                      if (!preg_match('/^[a-zA-Z\s]+$/', $title)) {
+                          $errors['title'] = 'title must be letters and spaces only';
+                      }
+                    }
+              // check text
+                if (empty($_POST['text'])) {
+                        $errors['text'] = 'text is required <br/>';
+                    } 
+          
+                if (array_filter($errors)) {
+
+                    } else {
+                        include_once('class.post.php');
+                        $text = mysqli_real_escape_string($connect, $_POST['text']);
+                        $title = mysqli_real_escape_string($connect, $_POST['title']);
+                        $belong_to = $_SESSION['id'];
+                        $post1 = new post( $title, $text, $belong_to);
+                        $post1 -> add();
+                        header('location: postByUser.php');
+                    }
+             }
+    // update post
+    if (isset($_POST['update'])) {
+      $title =$_POST['title'] ;
+      $text = $_POST['text'];
+      $id = $_POST['id'];
+      $sql = "UPDATE post SET title= '$title', text='$text' WHERE id= '$id' ";
+      $result = mysqli_query($connect, $sql);
       header('location: postByUser.php');
     }
+  
     // close connection
     mysqli_close($connect);
     ?>
@@ -42,9 +74,11 @@ if (isset($_SESSION['id'])) {
     <form action="postByUser.php" method="post">
     <!-- Default input -->
         <label for="form1">Title</label>
+        <h4><?php echo $errors['title']; ?> </h4>
         <input type="text" id="form1" name="title" class="form-control" width="200px">
     <div class="form-group">
         <label for="exampleFormControlTextarea2">Post Text</label>
+        <h4><?php echo $errors['text']; ?> </h4>
         <textarea class="form-control rounded-0"  name="text" id="exampleFormControlTextarea2" rows="3"></textarea>
     </div>
     <button class="btn btn-info my-4 btn-block" name="add" type="submit">Post</button>
@@ -59,7 +93,7 @@ if (isset($_SESSION['id'])) {
             <div class="col-lg-5">
             <!-- Featured image -->
             <div class="view overlay rounded z-depth-2 mb-lg-0 mb-4">
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/img%20(27).jpg" alt="Sample image">
+                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/img%20(<?php  echo rand (1,40) ?>).jpg" alt="Sample image">
                 <a>
                 <div class="mask rgba-white-slight"></div>
                 </a>
@@ -69,14 +103,15 @@ if (isset($_SESSION['id'])) {
             <!-- Grid column -->
             <div class="col-lg-7">
             <!-- Post title -->
-            <h3 class="font-weight-bold mb-3"><strong><?php echo htmlspecialchars($post['title']); ?></strong></h3>
+            <h3 class="font-weight-bold mb-3"><strong><?php echo htmlspecialchars($title = $post['title']); ?></strong></h3>
             <!-- Excerpt -->
-            <p><?php echo htmlspecialchars($post['text']); ?>.</p>
+            <p><?php echo htmlspecialchars($text = $post['text']); ?>.</p>
             <!-- Post data -->
-            <p>by <a><strong><?php echo $name['last_name'] . '  ' . $name['first_name'] ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('y-m-d') ; ?></p>
-            <!-- Read more button -->
-            <button type="button" class="btn btn-outline-primary btn-rounded waves-effect" data-toggle="modal" data-target="#modalLoginForm">Update</button>
-            <button type="button" class="btn btn-outline-danger btn-rounded waves-effect">Delete</button>
+            <p>by <a><strong><?php echo $name['last_name'] . ' ' . $name['first_name'] ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('y-m-d') ; ?></p>
+            <!-- get the id  -->
+             <?php  $id = $post['id']; ?>
+            <button type="button" onClick="test('<?php echo $text ?>','<?php echo $title ?>', '<?php echo $id ?>' )"  class="btn btn-outline-primary btn-rounded waves-effect" data-toggle="modal" data-target="#modalLoginForm">Update</button>
+            <a href="../delete.php?id=<?php echo $post['id'] ?>" class="btn btn-outline-danger btn-rounded waves-effect">Deete</a>
             <!-- <a class="btn btn-success btn-md">Read more</a> -->
             </div>
             <!-- Grid column -->
@@ -97,22 +132,22 @@ if (isset($_SESSION['id'])) {
       </div>
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
-          <textarea class="form-control validate" placeholder="Text" name="" id="defaultForm" cols="20" rows="7"></textarea>
+        <form action="postByUser.php" method="post">
+          <textarea class="form-control validate" placeholder="Text" id="text" name="text"  cols="20" rows="7"></textarea>
         </div>
         <div class="md-form mb-4">
         <label data-error="wrong" data-success="right" for="defaultForm-pass"></label>
-          <input type="text" placeholder="title" id="defaultForm" class="form-control validate">
-
+          <input type="text" placeholder="title" id="title" name='title'  class="form-control validate">
+          <input type="hidden" name="id" id="id">
         </div>
-
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-default">Login</button>
+        <button type="submit" name="update" class="btn btn-default">Update</button>
+        </form>
       </div>
     </div>
   </div>
 </div>
-
 </div>
 <!-- Section: Blog v.1 -->
 <?php include 'templates/footer.php';?>

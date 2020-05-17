@@ -24,10 +24,8 @@
             <div class="col-lg-5">
             <!-- Featured image -->
             <div class="view overlay rounded z-depth-2 mb-lg-0 mb-4">
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/img%20(27).jpg" alt="Sample image">
-                <a>
+                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/img%20(<?php  echo rand (1,40) ?>).jpg" alt="Sample image">
                 <div class="mask rgba-white-slight"></div>
-                </a>
             </div>
             </div>
             <!-- Grid column -->
@@ -38,7 +36,7 @@
             <!-- Excerpt -->
             <p><?php echo htmlspecialchars($post['text']); ?>.</p>
             <!-- Post data -->
-            <p>by <a><strong><?php echo htmlspecialchars($post['last_name']) . ' ' . htmlspecialchars($post['first_name']) ; ?></strong></a>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('d-m-y') ; ?></p>
+            <p>by <strong><?php echo htmlspecialchars($post['last_name']) . ' ' . htmlspecialchars($post['first_name']) ; ?></strong>, <?php $post['create_at'] = new DateTime();  echo $post['create_at']-> format('d-m-y') ; ?></p>
             <!-- Read more button -->
             <!-- <a class="btn btn-success btn-md">Read more</a> -->
             </div>
