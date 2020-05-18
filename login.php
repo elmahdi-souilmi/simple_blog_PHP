@@ -28,8 +28,8 @@
 <?php include 'templates/header.php';?>
 <!-- Default form login -->
 <div class="container">
-<form class="text-center border border-light p-5 mx-auto"  action="login.php" method="POST">
-    <p class="h4 mb-4">Sign in  <?php  ?></p>
+<form class="text-center border border-light p-5 mx-auto z-depth-2 formsm"  action="login.php" method="POST">
+    <p class="h1 mb-4">Sign in  <?php  ?></p>
     <!-- Email -->
     <input type="email" id="defaultLoginFormEmail" name="email" class="form-control mb-4" placeholder="E-mail">
     <!-- Password -->
@@ -44,7 +44,7 @@
     <button class="btn btn-info btn-block my-4" name="submit" type="submit">Sign in</button>
     <!-- Register -->
     <p>Not a member?
-        <a href="">Register</a>
+        <a href="register.php">Register</a>
     </p>
 </form>
 </div>

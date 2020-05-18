@@ -1,0 +1,19 @@
+body {
+    font-family: roboto;
+    font-size: larger;
+    color: rgb(97, 97, 97);
+}
+
+.error {
+    color: red;
+}
+
+.formsm {
+    width: 760px;
+    padding-top: 108px !important;
+    padding-bottom: 200px !important;
+    color: #2b8ae2c4;
+    background-color: #e4e4e48a;
+    border-radius: 15px;
+    box-shadow: black;
+}

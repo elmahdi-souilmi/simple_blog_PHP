@@ -73,26 +73,26 @@ if (isset($_POST['submit'])) {
 <?php include 'templates/header.php';?>
 <!-- Default form login -->
 <div class="container">
-<form class="text-center border border-light p-5 mx-auto" action="register.php" method="POST">
-    <p class="h4 mb-4">Sign up</p>
+<form class="text-center border border-light p-5 z-depth-2 mx-auto formsm" action="register.php" method="POST">
+    <h2 class="h1 mb-4">Sign up</h2>
     <div class="form-row mb-4">
         <div class="col">
             <!-- First name -->
             <input type="text" id="defaultRegisterFormFirstName" value="<?php echo $first_name ?>" name="first_name" class="form-control" placeholder="First name">
-            <p> <?php echo $errors['first_name'] ?> </p>
+            <p class="error"> <?php echo $errors['first_name'] ?> </p>
         </div>
         <div class="col">
             <!-- Last name -->
             <input type="text" id="defaultRegisterFormLastName" name="last_name" value="<?php echo $last_name ?>" class="form-control" placeholder="Last name">
-            <p> <?php echo $errors['last_name'] ?> </p>
+            <p class="error"> <?php echo $errors['last_name'] ?> </p>
         </div>
     </div>
     <!-- E-mail -->
     <input type="email" id="defaultRegisterFormEmail" name="email" value="<?php echo $email ?> " class="form-control mb-4" placeholder="E-mail">
-    <p> <?php echo $errors['email'] ?> </p>
+    <p class="error"> <?php echo $errors['email'] ?> </p>
     <!-- Password -->
     <input type="password" id="defaultRegisterFormPassword" name="password" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
-    <h4> <?php echo $errors['password'] ?> </h4>
+    <h5 class="error"> <?php echo $errors['password'] ?> </h5>
     <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
         At least 8 characters and 1 digit
     </small>
