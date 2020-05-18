@@ -2,18 +2,70 @@
  // connect to datebase
 include 'config/db_connect.php';
 include 'class.user.php';
+// array to stock the exepting error
+$errors = ['email' => '', 'first_name' => '', 'last_name' => '', 'password' => ''];
+// varaibles
+$email = "";
+$last_name = "";
+$first_name = "";
+
 if (isset($_POST['submit'])) {
+    // validation form
+    // check email
+    if (empty($_POST['email'])) {
+        $errors['email'] = 'email is required <br/>';
+    } else {
+        $email = $_POST['email'];
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'email not VALID';
+        }
+    }
+    // check first_name
+    if (empty($_POST['first_name'])) {
+        $errors['first_name'] = 'title is required <br/>';
+    } else {
+        $first_name = $_POST['first_name'];
+        if (!preg_match('/^[a-zA-Z\s]+$/', $first_name)) {
+            $errors['first_name'] = 'first name must be letters and spaces only';
+        }
+    }
+     // check last_name
+     if (empty($_POST['last_name'])) {
+        $errors['last_name'] = 'last name is required <br/>';
+    } else {
+        $last_name = $_POST['last_name'];
+        if (!preg_match('/^[a-zA-Z\s]+$/', $last_name)) {
+            $errors['last_name'] = 'last name must be letters and spaces only';
+        }
+    }
+    // check password
+    if (empty($_POST['password'])) {
+        $errors['password'] = 'password is required <br/>';
+    } else {
+        $title = $_POST['password'];
+        if (!preg_match('/^(?=.*\d).{8,20}$/', $title)) {
+            $errors['password'] = 'Password must be between 8 and 20 digits long and include at least one numeric digi';
+        }
+    }
+    // check if the email is already used
+    $email = $_POST['email'];
+     $sql = " SELECT * FROM user WHERE login = '$email' ";
+     $result = mysqli_query($connect, $sql);
+    //  echo mysqli_num_rows($result);
+     if (mysqli_num_rows($result)==1){
+        $errors['email'] = 'email is already used <br/>';
+     }
+    if (array_filter($errors)) {
 
-
-
-    
-    $first_name = mysqli_real_escape_string($connect, $_POST['first_name']);
-    $last_name = mysqli_real_escape_string($connect, $_POST['last_name']);
-    $email = mysqli_real_escape_string($connect, $_POST['email']);
-    $password= mysqli_real_escape_string($connect, $_POST['password']);
-     $user1 = new user($first_name, $last_name, $email, $password);
-     $user1 -> register();
-     header('location: postByUser.php');
+    } else { 
+        $first_name = mysqli_real_escape_string($connect, $_POST['first_name']);
+        $last_name = mysqli_real_escape_string($connect, $_POST['last_name']);
+        $email = mysqli_real_escape_string($connect, $_POST['email']);
+        $password= mysqli_real_escape_string($connect, $_POST['password']);
+        $user1 = new user($first_name, $last_name, $email, $password);
+        $user1 -> register();
+        header('location: login.php');
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -26,17 +78,21 @@ if (isset($_POST['submit'])) {
     <div class="form-row mb-4">
         <div class="col">
             <!-- First name -->
-            <input type="text" id="defaultRegisterFormFirstName" name="first_name" class="form-control" placeholder="First name">
+            <input type="text" id="defaultRegisterFormFirstName" value="<?php echo $first_name ?>" name="first_name" class="form-control" placeholder="First name">
+            <p> <?php echo $errors['first_name'] ?> </p>
         </div>
         <div class="col">
             <!-- Last name -->
-            <input type="text" id="defaultRegisterFormLastName" name="last_name" class="form-control" placeholder="Last name">
+            <input type="text" id="defaultRegisterFormLastName" name="last_name" value="<?php echo $last_name ?>" class="form-control" placeholder="Last name">
+            <p> <?php echo $errors['last_name'] ?> </p>
         </div>
     </div>
     <!-- E-mail -->
-    <input type="email" id="defaultRegisterFormEmail" name="email" class="form-control mb-4" placeholder="E-mail">
+    <input type="email" id="defaultRegisterFormEmail" name="email" value="<?php echo $email ?> " class="form-control mb-4" placeholder="E-mail">
+    <p> <?php echo $errors['email'] ?> </p>
     <!-- Password -->
     <input type="password" id="defaultRegisterFormPassword" name="password" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
+    <h4> <?php echo $errors['password'] ?> </h4>
     <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
         At least 8 characters and 1 digit
     </small>

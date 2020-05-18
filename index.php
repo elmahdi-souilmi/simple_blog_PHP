@@ -24,7 +24,7 @@
             <div class="col-lg-5">
             <!-- Featured image -->
             <div class="view overlay rounded z-depth-2 mb-lg-0 mb-4">
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/img%20(<?php  echo rand (1,40) ?>).jpg" alt="Sample image">
+                <img class="img-fluid" src="https://www.latasca.com/wp-content/uploads/2017/02/header-blog.png" alt="Sample image">
                 <div class="mask rgba-white-slight"></div>
             </div>
             </div>

@@ -2,6 +2,7 @@
 session_start();
 if (isset($_SESSION['id'])) {   
   $title = '';
+  $text= '';
   // errors
   $errors = ['text' => '', 'title' => ''];
     //  echo 'welcome id :' . $_SESSION['id'];
@@ -34,7 +35,10 @@ if (isset($_SESSION['id'])) {
               // check text
                 if (empty($_POST['text'])) {
                         $errors['text'] = 'text is required <br/>';
-                    } 
+                    } else 
+                    {
+                      $title = $_POST['title'];
+                      }
           
                 if (array_filter($errors)) {
 
@@ -75,17 +79,17 @@ if (isset($_SESSION['id'])) {
     <!-- Default input -->
         <label for="form1">Title</label>
         <h4><?php echo $errors['title']; ?> </h4>
-        <input type="text" id="form1" name="title" class="form-control" width="200px">
+        <input type="text" id="form1" name="title" value="<?php echo $title ?> " class="form-control" width="200px">
     <div class="form-group">
         <label for="exampleFormControlTextarea2">Post Text</label>
         <h4><?php echo $errors['text']; ?> </h4>
-        <textarea class="form-control rounded-0"  name="text" id="exampleFormControlTextarea2" rows="3"></textarea>
+        <textarea class="form-control rounded-0" value = " <?php echo $text ?> "  name="text" id="exampleFormControlTextarea2" rows="3"></textarea>
     </div>
     <button class="btn btn-info my-4 btn-block" name="add" type="submit">Post</button>
     </center>
          </form>
         <!-- Section heading -->
-        <h2 class="h1-responsive font-weight-bold text-center my-5">Post by <?php echo $name['last_name'] ?> </h2>
+        <h2 class="h1-responsive font-weight-bold text-center my-5">Post by <?php echo $name['last_name'] . ' ' . $name['first_name'] ?></h2>
         <?php foreach ($posts as $post) {?>        
         <!-- Grid row -->
         <div class="row">
@@ -93,7 +97,7 @@ if (isset($_SESSION['id'])) {
             <div class="col-lg-5">
             <!-- Featured image -->
             <div class="view overlay rounded z-depth-2 mb-lg-0 mb-4">
-                <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Others/img%20(<?php  echo rand (1,40) ?>).jpg" alt="Sample image">
+                <img class="img-fluid" src="https://www.latasca.com/wp-content/uploads/2017/02/header-blog.png" alt="Sample image">
                 <a>
                 <div class="mask rgba-white-slight"></div>
                 </a>
